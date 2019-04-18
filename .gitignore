@@ -30,3 +30,4 @@
 *.exe
 *.out
 *.app
+.vscode/ipch/d7ce06856b5d6d50/tester.ipch

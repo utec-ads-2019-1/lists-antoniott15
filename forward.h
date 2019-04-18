@@ -5,73 +5,102 @@
 #include "iterators/forward_iterator.h"
 
 template <typename T>
-class ForwardList : public List<T> {
-    public:
-        ForwardList() : List<T>() {}
+class ForwardList : public List<T>
+{
+public:
+    ForwardList() : List<T>() {}
 
-        T front() {
-            // TODO
-        }
+    T front()
+    {
+        return head->data;
+    }
 
-        T back() {
-            // TODO
-        }
+    T back()
+    {
+        return tail->data;
+    }
 
-        void push_front(T value) {
-            // TODO
+    void push_front(T value)
+    {
+        Node<T> *NewData = new Node<T>;
+        if (!empty())
+        {
+            NewData->next = head;
+            NewData->data = value;
+            head = NewData;
         }
+        else
+        {
+            NewData->data = value;
+            NewData->next = nullptr head = NewData;
+            tail = NewData;
+        }
+    }
 
-        void push_back(T value) {
-            // TODO
-        }
+    void push_back(T value)
+    {
+        // TODO
+    }
 
-        void pop_front() {
-            // TODO
-        }
+    void pop_front()
+    {
+        // TODO
+    }
 
-        void pop_back() {
-            // TODO
-        }
+    void pop_back()
+    {
+        // TODO
+    }
 
-        T operator[](int index) {
-            // TODO
-        }
+    T operator[](int index)
+    {
+        // TODO
+    }
 
-        bool empty() {
-            // TODO
-        }
+    bool empty()
+    {
+        // TODO
+    }
 
-        int size() {
-            // TODO
-        }
+    int size()
+    {
+        // TODO
+    }
 
-        void clear() {
-            // TODO
-        }
+    void clear()
+    {
+        // TODO
+    }
 
-        void sort() {
-            // TODO
-        }
-    
-        void reverse() {
-            // TODO
-        }
+    void sort()
+    {
+        // TODO
+    }
 
-        string name() {
-            return "Forward List";
-        }
+    void reverse()
+    {
+        // TODO
+    }
 
-        ForwardIterator<T> begin() {
-            // TODO
-        }
+    string name()
+    {
+        return "Forward List";
+    }
 
-	    ForwardIterator<T> end() {
-            // TODO
-        }
+    ForwardIterator<T> begin()
+    {
+        // TODO
+    }
 
-        void merge(ForwardList<T> list) {
-            // TODO
-        }
+    ForwardIterator<T> end()
+    {
+        // TODO
+    }
+
+    void merge(ForwardList<T> list)
+    {
+        // TODO
+    }
 };
 
 #endif
