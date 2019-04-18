@@ -59,11 +59,45 @@ public:
 
     void pop_front()
     {
+        if (empty())
+        {
+            if (head->next == nullptr)
+            {
+                delete head;
+                head = nullptr;
+            }
+            else
+            {
+                Node *temp = head->next;
+                delete head;
+                head = nullptr;
+                head = temp;
+            }
+        }
     }
 
     void pop_back()
     {
-        // TODO
+        if (empty())
+        {
+            if (head->next = nullptr)
+            {
+                delete head;
+                head = nullptr;
+            }
+            else
+            {
+                Node *temp = head;
+                while (temp->next = !tail)
+                {
+                    temp = temp->next;
+                }
+
+                delete tail;
+                tail = temp;
+                tail->next = nullptr;
+            }
+        }
     }
 
     T operator[](int index)
