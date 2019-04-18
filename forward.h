@@ -102,22 +102,38 @@ public:
 
     T operator[](int index)
     {
-        // TODO
+        Node *temp;
+        temp = head;
+        for (int i = 0; i <= index; i++)
+        {
+            if (temp->next == nullptr)
+            {
+                throw;
+            }
+            temp->next = temp;
+        }
+        cout << temp << "\n";
     }
 
     bool empty()
     {
-        // TODO
+        return head == NULL ? true : false;
     }
 
     int size()
     {
-        // TODO
+        if (!empty())
+        {
+            int count = 0;
+            while (temp->next != nullptr)
+            {
+                count++;
+            }
+        }
     }
 
     void clear()
     {
-        // TODO
     }
 
     void sort()
@@ -127,7 +143,10 @@ public:
 
     void reverse()
     {
-        // TODO
+        for (int i = size();; --i)
+        {
+            coutt << operator[i - 1] << "\n";
+        }
     }
 
     string name()
