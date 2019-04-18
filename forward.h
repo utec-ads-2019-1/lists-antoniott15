@@ -32,19 +32,33 @@ public:
         else
         {
             NewData->data = value;
-            NewData->next = nullptr head = NewData;
+            NewData->next = nullptr;
+            head = NewData;
             tail = NewData;
         }
     }
 
     void push_back(T value)
     {
-        // TODO
+        Node<T> *NewData = new Node<T>;
+        if (!empty())
+        {
+            NewData->next = tail;
+            NewData->data = value;
+            tail->next = NewData;
+            tail = NewData;
+        }
+        else
+        {
+            NewData->data = value;
+            NewData->next = nullptr;
+            tail = NewData;
+            head = NewData;
+        }
     }
 
     void pop_front()
     {
-        // TODO
     }
 
     void pop_back()
