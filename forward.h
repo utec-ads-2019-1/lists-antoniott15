@@ -130,20 +130,33 @@ public:
                 count++;
             }
         }
+        return count;
     }
 
     void clear()
     {
+        Node *temp;
+        temp = tail;
+        for (int i = 0; i <= size(); i++)
+        {
+            temp->next = temp;
+            delete temp;
+        }
     }
 
     void sort()
     {
-        // TODO
+        Node *temp;
+        temp = tail;
+        for (int i = 0; i <= size(); i++)
+        {
+            
+        }
     }
 
     void reverse()
     {
-        for (int i = size();; --i)
+        for (int i = size(); i > 0; --i)
         {
             coutt << operator[i - 1] << "\n";
         }
@@ -154,19 +167,22 @@ public:
         return "Forward List";
     }
 
-    ForwardIterator<T> begin()
-    {
-        // TODO
-    }
+    ForwardIterator<T> begin();
 
-    ForwardIterator<T> end()
-    {
-        // TODO
-    }
+    ForwardIterator<T> end();
 
     void merge(ForwardList<T> list)
     {
-        // TODO
+        if (empty())
+        {
+            head = list->head;
+            tail = list->tail;
+        }
+        else if (!list.empty())
+        {
+            tail->next = list->head;
+            tail = list->tail;
+        }
     }
 };
 
