@@ -7,6 +7,11 @@
 template <typename T>
 class ForwardList : public List<T>
 {
+private:
+    Node<T> *head;
+    Node<T> *tail;
+    int node;
+
 public:
     ForwardList() : List<T>() {}
 
@@ -23,56 +28,54 @@ public:
     void push_front(T value)
     {
         Node<T> *NewData = new Node<T>;
-        if (!empty())
-        {
-            NewData->next = head;
-            NewData->data = value;
-            head = NewData;
-        }
-        else
+        if (empty())
         {
             NewData->data = value;
             NewData->next = nullptr;
             head = NewData;
             tail = NewData;
+        }
+        else
+        {
+            NewData->data = value;
+            NewData->next = head;
+            head = NewData;
         }
     }
 
     void push_back(T value)
     {
         Node<T> *NewData = new Node<T>;
-        if (!empty())
+        NewData->data = value;
+        NewData->next = nullptr;
+        NewData->prev = nullptr;
+
+        if (head == nullptr)
         {
-            NewData->next = tail;
-            NewData->data = value;
-            tail->next = NewData;
-            tail = NewData;
+            head = NewData;
+            if (tail == nullptr)
+            {
+                tail = head;
+            }
         }
         else
-        {
-            NewData->data = value;
-            NewData->next = nullptr;
-            tail = NewData;
-            head = NewData;
-        }
+            tail->prev = NewData;
     }
 
     void pop_front()
     {
-        if (empty())
+
+        if (head->next == nullptr)
         {
-            if (head->next == nullptr)
-            {
-                delete head;
-                head = nullptr;
-            }
-            else
-            {
-                Node *temp = head->next;
-                delete head;
-                head = nullptr;
-                head = temp;
-            }
+            delete head;
+            head = nullptr;
+        }
+        else
+        {
+            Node<T> *temp = head->next;
+            delete head;
+            head = nullptr;
+            head = temp;
         }
     }
 
@@ -80,29 +83,29 @@ public:
     {
         if (empty())
         {
-            if (head->next = nullptr)
+            cout << "empty list" << endl;
+        }
+        else
+        {
+            Node<T> *nodeToDelete = tail;
+            tail = tail->prev;
+
+            if (tail)
             {
-                delete head;
-                head = nullptr;
+                tail->next = nullptr;
             }
             else
             {
-                Node *temp = head;
-                while (temp->next = !tail)
-                {
-                    temp = temp->next;
-                }
-
-                delete tail;
-                tail = temp;
-                tail->next = nullptr;
+                head = nullptr;
             }
+
+            delete nodeToDelete;
         }
     }
 
     T operator[](int index)
     {
-        Node *temp;
+        Node<T> *temp;
         temp = head;
         for (int i = 0; i <= index; i++)
         {
@@ -122,9 +125,12 @@ public:
 
     int size()
     {
-        if (!empty())
+        Node<T> *temp;
+        temp = head;
+        int count;
+        if (empty())
         {
-            int count = 0;
+            count = 0;
             while (temp->next != nullptr)
             {
                 count++;
@@ -135,22 +141,34 @@ public:
 
     void clear()
     {
-        Node *temp;
-        temp = tail;
-        for (int i = 0; i <= size(); i++)
+        while (head != nullptr)
         {
-            temp->next = temp;
-            delete temp;
+            pop_front();
         }
     }
 
     void sort()
     {
-        Node *temp;
-        temp = tail;
-        for (int i = 0; i <= size(); i++)
+        if (empty())
         {
-            
+            cout << "list empty";
+        }
+        else
+        {
+            Node<T> *i, *j;
+            int temp;
+            for (i = head; i->next != nullptr; i = i->next)
+            {
+                for (j = i->next; j != nullptr; j = j->next)
+                {
+                    if (i->data > j->data)
+                    {
+                        temp = i->data;
+                        i->data = j->data;
+                        j->data = temp;
+                    }
+                }
+            }
         }
     }
 
@@ -158,7 +176,7 @@ public:
     {
         for (int i = size(); i > 0; --i)
         {
-            coutt << operator[i - 1] << "\n";
+            cout << operator[](i - 1) << "\n";
         }
     }
 
@@ -167,21 +185,35 @@ public:
         return "Forward List";
     }
 
-    ForwardIterator<T> begin();
+    ForwardIterator<T> begin()
+    {
+        if (empty())
+        {
+            cout << "list empyty";
+        }
+        return head;
+    };
 
-    ForwardIterator<T> end();
+    ForwardIterator<T> end()
+    {
+        if (empty())
+        {
+            cout << "list empyty";
+        }
+        return tail;
+    };
 
     void merge(ForwardList<T> list)
     {
         if (empty())
         {
-            head = list->head;
-            tail = list->tail;
+            head = list.head;
+            tail = list.tail;
         }
         else if (!list.empty())
         {
-            tail->next = list->head;
-            tail = list->tail;
+            tail->next = list.head;
+            tail = list.tail;
         }
     }
 };

@@ -4,73 +4,247 @@
 #include "list.h"
 
 template <typename T>
-class CircularLinkedList : public List<T> {
-    public:
-        CircularLinkedList() : List<T>() {}
+class CircularLinkedList : public List<T>
+{
+private:
+    Node<T> *start;
 
-        T front() {
-            // TODO
-        }
+public:
+    CircularLinkedList() : List<T>() {}
 
-        T back() {
-            // TODO
+    T front()
+    {
+        if (!start)
+        {
+            cout << "lista vacia" << endl;
         }
+        else
+        {
+            return start->data;
+        }
+    }
 
-        void push_front(T value) {
-            // TODO
+    T back()
+    {
+        if (!start)
+        {
+            cout << "lista vacia" << endl;
         }
+        else
+        {
 
-        void push_back(T value) {
-            // TODO
+            return start->prev->data;
         }
+    }
 
-        void pop_front() {
-            // TODO
+    void push_front(T value)
+    {
+        Node<T> *temp = new Node<T>;
+        temp->data = value;
+        if (start)
+        {
+            temp->next = start;
+            temp->prev = start->prev;
+            temp->prev->next = temp;
+            temp->next->prev = temp;
+            start = temp;
         }
+        else
+        {
+            start = temp;
+            temp->next = start;
+            temp->prev = start;
+        }
+    }
 
-        void pop_back() {
-            // TODO
+    void push_back(T value)
+    {
+        Node<T> *temp = new Node<T>;
+        temp->data = value;
+        if (start)
+        {
+            temp->next = start;
+            temp->prev = start->prev;
+            temp->prev->next = temp;
+            temp->next->prev = temp;
         }
+        else
+        {
+            start = temp;
+            temp->next = start;
+            temp->prev = start;
+        }
+    }
 
-        T operator[](int index) {
-            // TODO
-        }
+    void pop_front()
+    {
+        if (start)
+        {
+            Node<T> *temp_start;
+            start->next->prev = start->prev;
+            start->prev->next = start->next;
+            temp_start = start->next;
+            delete start;
 
-        bool empty() {
-            // TODO
+            if (start == temp_start)
+            {
+                start = nullptr;
+                temp_start = nullptr;
+            }
+            else
+            {
+                start = temp_start;
+                temp_start = nullptr;
+            }
         }
+        else
+        {
+            cout << "lista vacia" << endl;
+        }
+    }
 
-        int size() {
-            // TODO
-        }
+    void pop_back()
+    {
+        if (start)
+        {
+            if (start == start->prev)
+            {
+                delete start;
+                start = nullptr;
+            }
+            else
+            {
+                Node<T> *temp_prev;
+                temp_prev = start->prev;
 
-        void clear() {
-            // TODO
+                start->prev->prev->next = start;
+                start->prev = start->prev->prev;
+                delete temp_prev;
+                temp_prev = nullptr;
+            }
         }
+        else
+        {
+            cout << "empty list" << endl;
+        }
+    }
 
-        void sort() {
-            // TODO
-        }
-    
-        void reverse() {
-            // TODO
-        }
+    T operator[](int index)
+    {
 
-        string name() {
-            return "Circular Linked List";
+        if (!start)
+        {
+            cout << "empty list" << endl;
         }
+        else
+        {
+            if (index < 1)
+            {
+                cout << start << endl;
+            }
+            else
+            {
+                Node<T> *curr;
+                curr = start;
+                for (int i = 0; i < index; ++i)
+                {
+                    curr = curr->next;
+                }
 
-        BidirectionalIterator<T> begin() {
-            // TODO
+                return curr->data;
+            }
         }
+    }
 
-	    BidirectionalIterator<T> end() {
-            // TODO
-        }
+    bool empty()
+    {
+        return (!start);
+    }
 
-        void merge(CircularLinkedList<T> list) {
-            // TODO
+    int size()
+    {
+        if (start)
+        {
+            Node<T> *curr;
+            curr = start;
+            int i = 0;
+            do
+            {
+                curr = curr->next;
+                i++;
+            } while (curr->next != start->next);
+            return i;
         }
+        else
+        {
+            return 0;
+        }
+    }
+
+    void clear()
+    {
+
+        while (start != nullptr)
+        {
+            pop_front();
+        }
+    }
+
+    void sort()
+    {
+        if (start)
+        {
+            Node<T> *i, *j;
+            int temp;
+            for (i = start; i->next != nullptr; i = i->next)
+            {
+                for (j = i->next; j != nullptr; j = j->next)
+                {
+                    if (i->data > j->data)
+                    {
+                        temp = i->data;
+                        i->data = j->data;
+                        j->data = temp;
+                    }
+                }
+            }
+        }
+        else
+            cout << "list empty";
+    }
+
+    void reverse()
+    {
+        for (int i = size(); i > 0; --i)
+        {
+            cout << operator[](i - 1) << "\n";
+        }
+    }
+
+    string name()
+    {
+        return "Circular Linked List";
+    }
+
+    BidirectionalIterator<T> begin()
+    {
+        return BidirectionalIterator<T>(start);
+    }
+
+    BidirectionalIterator<T> end()
+    {
+        return BidirectionalIterator<T>(start->prev);
+    }
+
+    void merge(CircularLinkedList<T> list)
+    {
+        BidirectionalIterator<T> tmp = list.begin();
+        do
+        {
+            this->push_back(*tmp);
+            ++tmp;
+        } while (tmp != list.begin());
+    }
 };
 
 #endif
