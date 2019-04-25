@@ -6,7 +6,7 @@
 #include <assert.h>
 
 #include "../mock/mocker.h"
-#include "../forward.h"
+//#include "../forward.h"
 #include "../linked.h"
 #include "../circular.h"
 
@@ -34,7 +34,7 @@ using namespace std;
 
 enum Collection
 {
-    forward_list,
+    //forward_list,
     linked_list,
     circular_list
 };
@@ -57,8 +57,8 @@ private:
     template <typename T>
     static void testSpecifics(Collection, List<T> *);
 
-    template <typename T>
-    static void testForward(ForwardList<T> *);
+    //  template <typename T>
+    //static void testForward(ForwardList<T> *);
 
     template <typename T>
     static void testLinked(LinkedList<T> *);

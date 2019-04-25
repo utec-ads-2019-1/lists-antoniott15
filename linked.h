@@ -4,6 +4,8 @@
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
 #include <iostream>
+#include <stdexcept>
+
 using namespace std;
 template <typename T>
 class LinkedList : public List<T>
@@ -25,7 +27,7 @@ public:
         }
         else
         {
-            throw out_of_range("List empty, no front exists.");
+            throw out_of_range("Invalid");
         }
     }
 
@@ -37,7 +39,7 @@ public:
         }
         else
         {
-            throw out_of_range("List empty, no tail exists.");
+            throw out_of_range("Invalid");
         }
     }
 
@@ -65,24 +67,21 @@ public:
         Node<T> *NewData = new Node<T>;
         if (empty())
         {
-            NewData->data = value;
-            NewData->next = nullptr;
             head = NewData;
             tail = NewData;
         }
         else
         {
-            NewData->next = NULL;
-            NewData->data = value;
-            tail->next = NewData;
-            tail = NewData;
+            this->tail->next = NewData;
+            NewData->prev = this->tail;
+            this->tail = NewData;
         }
         countingElements++;
     }
 
     void pop_front()
     {
-        if (empty())
+        if (!empty())
         {
             if (head->next == nullptr)
             {
@@ -97,10 +96,6 @@ public:
                 head = temp;
             }
             countingElements--;
-        }
-        else
-        {
-            cout << "invalid";
         }
     }
 
@@ -129,19 +124,19 @@ public:
         }
         else
         {
-            cout << "invalid";
+            throw out_of_range("Invalid.");
         }
     }
 
     T operator[](int index)
     {
-        Node<T> *temp = head;
-
+        Node<T> *temp;
+        temp = head;
         for (int i = 0; i < index; ++i)
         {
             if (temp->next == nullptr)
             {
-                cout << "invalid";
+                throw out_of_range("Invalid");
             }
             temp->next = temp;
         }
@@ -150,7 +145,7 @@ public:
 
     bool empty()
     {
-        return head == NULL ? true : false;
+        return countingElements == 0 ? true : false;
     }
 
     int size()
@@ -170,7 +165,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empty";
+            throw out_of_range("Invalid");
         }
         else
         {
@@ -208,7 +203,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empyty";
+            throw out_of_range("Invalid");
         }
         return head;
     };
@@ -216,7 +211,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empyty";
+            throw out_of_range("Invalid");
         }
         return tail;
     };
