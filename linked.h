@@ -13,7 +13,6 @@ class LinkedList : public List<T>
 private:
     Node<T> *head;
     Node<T> *tail;
-    int node;
     int countingElements = 0;
 
 public:
@@ -27,7 +26,7 @@ public:
         }
         else
         {
-            throw out_of_range("Invalid");
+            throw out_of_range("Invalid in T front");
         }
     }
 
@@ -35,65 +34,74 @@ public:
     {
         if (tail != nullptr)
         {
-            return head->prev->data;
+            return tail->prev->data;
         }
         else
         {
-            throw out_of_range("Invalid");
+            throw out_of_range("Invalid in T back");
         }
     }
 
     void push_front(T value)
     {
-        Node<T> *NewData = new Node<T>;
-        if (empty())
+        Node<T> *temp = new Node<T>;
+        temp->data = value;
+        if (head)
         {
-            NewData->data = value;
-            NewData->next = nullptr;
-            head = NewData;
-            tail = NewData;
+            temp->next = head;
+            temp->prev = head->prev;
+            temp->prev->next = temp;
+            temp->next->prev = temp;
+            head = temp;
         }
         else
         {
-            NewData->next = head;
-            NewData->data = value;
-            head = NewData;
+            head = temp;
+            temp->next = head;
+            temp->prev = head;
         }
         countingElements++;
     }
 
     void push_back(T value)
     {
-        Node<T> *NewData = new Node<T>;
-        if (empty())
+        Node<T> *temp = new Node<T>;
+        temp->data = value;
+        if (head)
         {
-            head = NewData;
-            tail = NewData;
+            temp->next = head;
+            temp->prev = head->prev;
+            temp->prev->next = temp;
+            temp->next->prev = temp;
         }
         else
         {
-            this->tail->next = NewData;
-            NewData->prev = this->tail;
-            this->tail = NewData;
+            head = temp;
+            temp->next = head;
+            temp->prev = head;
         }
         countingElements++;
     }
 
     void pop_front()
     {
-        if (!empty())
+        if (head)
         {
-            if (head->next == nullptr)
+            Node<T> *temp_head;
+            head->next->prev = head->prev;
+            head->prev->next = head->next;
+            temp_head = head->next;
+            delete head;
+
+            if (head == temp_head)
             {
-                delete head;
                 head = nullptr;
+                temp_head = nullptr;
             }
             else
             {
-                Node<T> *temp = head->next;
-                delete head;
-                head = nullptr;
-                head = temp;
+                head = temp_head;
+                temp_head = nullptr;
             }
             countingElements--;
         }
@@ -101,30 +109,24 @@ public:
 
     void pop_back()
     {
-        if (empty())
+        if (head)
         {
-            if (head->next == nullptr)
+            if (head == head->prev)
             {
                 delete head;
                 head = nullptr;
             }
             else
             {
-                Node<T> *temp = head;
-                while (temp->next != tail)
-                {
-                    temp = temp->next;
-                }
+                Node<T> *temp_prev;
+                temp_prev = head->prev;
 
-                delete tail;
-                tail = temp;
-                tail->next = nullptr;
+                head->prev->prev->next = head;
+                head->prev = head->prev->prev;
+                delete temp_prev;
+                temp_prev = nullptr;
             }
             countingElements--;
-        }
-        else
-        {
-            throw out_of_range("Invalid.");
         }
     }
 
@@ -136,7 +138,7 @@ public:
         {
             if (temp->next == nullptr)
             {
-                throw out_of_range("Invalid");
+                throw out_of_range("Invalid in T index");
             }
             temp->next = temp;
         }
@@ -165,7 +167,7 @@ public:
     {
         if (empty())
         {
-            throw out_of_range("Invalid");
+            throw out_of_range("Invalid empty in sort");
         }
         else
         {
@@ -203,7 +205,7 @@ public:
     {
         if (empty())
         {
-            throw out_of_range("Invalid");
+            throw out_of_range("Invalid in BidirectionalIterator begin");
         }
         return head;
     };
@@ -211,7 +213,7 @@ public:
     {
         if (empty())
         {
-            throw out_of_range("Invalid");
+            throw out_of_range("Invalid int BidirectionalIterator end");
         }
         return tail;
     };
