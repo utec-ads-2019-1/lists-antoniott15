@@ -5,73 +5,226 @@
 #include "iterators/bidirectional_iterator.h"
 
 template <typename T>
-class LinkedList : public List<T> {
-    public:
-        LinkedList() : List<T>() {}
+class LinkedList : public List<T>
+{
+private:
+    Node<T> *head;
+    Node<T> *tail;
+    int node;
 
-        T front() {
-            // TODO
-        }
+public:
+    LinkedList() : List<T>() {}
 
-        T back() {
-            // TODO
-        }
+    T front()
+    {
+        return head->data;
+    }
 
-        void push_front(T value) {
-            // TODO
-        }
+    T back()
+    {
+        return head->prev->data;
+    }
 
-        void push_back(T value) {
-            // TODO
+    void push_front(T value)
+    {
+        Node<T> *NewData = new Node<T>;
+        NewData->data = value;
+        if (empty())
+        {
+            NewData->next = nullptr;
+            NewData->prev = nullptr;
+            head = NewData;
+            tail = NewData;
         }
+        else
+        {
+            head->prev = NewData;
+            NewData->next = head;
+            head = NewData;
+        }
+    }
 
-        void pop_front() {
-            // TODO
-        }
+    void push_back(T value)
+    {
+        Node<T> *NewData = new Node<T>;
+        NewData->data = value;
 
-        void pop_back() {
-            // TODO
+        if (empty())
+        {
+            NewData->next = nullptr;
+            NewData->prev = nullptr;
+            head = NewData;
+            tail = NewData;
         }
+        else
+        {
+            if (tail != nullptr)
+                tail->next = NewData;
+            NewData->next = nullptr;
+            NewData->prev = tail;
+            tail = NewData;
+        }
+    }
 
-        T operator[](int index) {
-            // TODO
-        }
+    void pop_front()
+    {
+        if (!empty())
+        {
+            Node<T> *nodeToDelete = head;
+            head = head->next;
 
-        bool empty() {
-            // TODO
-        }
+            if (head)
+            {
+                head->next = nullptr;
+            }
+            else
+            {
+                head = nullptr;
+            }
 
-        int size() {
-            // TODO
+            delete nodeToDelete;
         }
+        else
+        {
+            cout << "empty list" << endl;
+        }
+    }
 
-        void clear() {
-            // TODO
-        }
+    void pop_back()
+    {
+        if (empty())
+        {
+            if (head->next == nullptr)
+            {
+                delete head;
+                head = nullptr;
+            }
+            else
+            {
+                Node<T> *temp = head;
+                while (temp->next != tail)
+                {
+                    temp = temp->next;
+                }
 
-        void sort() {
-            // TODO
+                delete tail;
+                tail = temp;
+                tail->next = nullptr;
+            }
         }
-    
-        void reverse() {
-            // TODO
-        }
+    }
 
-        string name() {
-            return "Linked List";
+    T operator[](int index)
+    {
+        Node<T> *temp = head;
+        for (int i = 0; i <= index; i++)
+        {
+            if (temp->next == nullptr)
+            {
+                cout << "not more values";
+            }
+            temp->next = temp;
         }
+        cout << temp << "\n";
+    }
 
-        BidirectionalIterator<T> begin() {
-            // TODO
-        }
+    bool empty()
+    {
+        return head == NULL ? true : false;
+    }
 
-	    BidirectionalIterator<T> end() {
-            // TODO
+    int size()
+    {
+        Node<T> *temp;
+        int count;
+        if (empty())
+        {
+            int count = 0;
+            while (temp->next != nullptr)
+            {
+                count++;
+            }
         }
+        return count;
+    }
 
-        void merge(LinkedList<T> list) {
-            // TODO
+    void clear()
+    {
+        while (head != nullptr)
+        {
+            pop_front();
         }
+    }
+
+    void sort()
+    {
+        if (empty())
+        {
+            cout << "list empty";
+        }
+        else
+        {
+            Node<T> *i, *j;
+            int temp;
+            for (i = head; i->next != nullptr; i = i->next)
+            {
+                for (j = i->next; j != nullptr; j = j->next)
+                {
+                    if (i->data > j->data)
+                    {
+                        temp = i->data;
+                        i->data = j->data;
+                        j->data = temp;
+                    }
+                }
+            }
+        }
+    }
+
+    void reverse()
+    {
+        for (int i = size(); i > 0; --i)
+        {
+            cout << operator[](i - 1) << "\n";
+        }
+    }
+
+    string name()
+    {
+        return "Linked List";
+    }
+
+    BidirectionalIterator<T> begin()
+    {
+        if (empty())
+        {
+            cout << "list empyty";
+        }
+        return head;
+    };
+    BidirectionalIterator<T> end()
+    {
+        if (empty())
+        {
+            cout << "list empyty";
+        }
+        return tail;
+    };
+
+    void merge(LinkedList<T> list)
+    {
+        if (empty())
+        {
+            head = list.head;
+            tail = list.tail;
+        }
+        else if (!list.empty())
+        {
+            tail->next = list.head;
+            list.head = head->prev;
+            tail = list.tail;
+        }
+    }
 };
 
 #endif

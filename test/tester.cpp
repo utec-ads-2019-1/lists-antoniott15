@@ -1,11 +1,14 @@
 #include "tester.h"
 
-void Tester::execute() {
-    Collection collections[] = { forward_list, linked_list, circular_list };
+void Tester::execute()
+{
+    Collection collections[] = {forward_list, linked_list, circular_list};
     size_t numberOfCollections = sizeof(collections) / sizeof(collections[0]);
 
-    for (int i = 0; i < numberOfCollections; i++) {
-        for (int j = 0; j < NUMBER_OF_TESTS; ++j) {
+    for (int i = 0; i < numberOfCollections; i++)
+    {
+        for (int j = 0; j < NUMBER_OF_TESTS; ++j)
+        {
             testList<int>(collections[i]);
             testList<char>(collections[i]);
         }
@@ -13,32 +16,48 @@ void Tester::execute() {
 }
 
 template <typename T>
-List<T>* Tester::getCollection(Collection collection) {
-    switch (collection) {
-        case forward_list: return new ForwardList<T>();
-        case linked_list: return new LinkedList<T>();
-        case circular_list: return new CircularLinkedList<T>();
-        default: throw invalid_argument("Not a valid collection - build");
+List<T> *Tester::getCollection(Collection collection)
+{
+    switch (collection)
+    {
+    case forward_list:
+        return new ForwardList<T>();
+    case linked_list:
+        return new LinkedList<T>();
+    case circular_list:
+        return new CircularLinkedList<T>();
+    default:
+        throw invalid_argument("Not a valid collection - build");
     }
 }
 
 template <typename T>
-void Tester::testSpecifics(Collection collection, List<T>* list) {
-    switch (collection) {
-        case forward_list: testForward((ForwardList<T>*) list); break;
-        case linked_list: testLinked((LinkedList<T>*) list); break;
-        case circular_list: testCircularLinked((CircularLinkedList<T>*) list); break;
-        default: throw invalid_argument("Not a valid collection - specifics");
+void Tester::testSpecifics(Collection collection, List<T> *list)
+{
+    switch (collection)
+    {
+    case forward_list:
+        testForward((ForwardList<T> *)list);
+        break;
+    case linked_list:
+        testLinked((LinkedList<T> *)list);
+        break;
+    case circular_list:
+        testCircularLinked((CircularLinkedList<T> *)list);
+        break;
+    default:
+        throw invalid_argument("Not a valid collection - specifics");
     }
 }
 
 template <typename T>
-void Tester::testList(Collection collection) {
+void Tester::testList(Collection collection)
+{
     Mocker mocker;
     unsigned int size = mocker.generateRandomInt(10);
-    T* elements = mocker.generateRandomArray<T>(size);
-    List<T>* list = getCollection<T>(collection);
-    List<T>* list1 = getCollection<T>(collection);
+    T *elements = mocker.generateRandomArray<T>(size);
+    List<T> *list = getCollection<T>(collection);
+    List<T> *list1 = getCollection<T>(collection);
 
     ASSERT(list->size() == 0, "The " + list->name() + " size is not working");
     ASSERT(list->empty() == true, "The " + list->name() + " empty is not working");
@@ -60,7 +79,7 @@ void Tester::testList(Collection collection) {
     list->pop_back();
     ASSERT(list->size() == 4, "The " + list->name() + " pop_back is not working");
     ASSERT(list->back() == elements[4], "The " + list->name() + " back is not working");
-    
+
     list->reverse();
 
     ASSERT(list->back() == elements[1], "The " + list->name() + " reverse is not working");
@@ -82,9 +101,12 @@ void Tester::testList(Collection collection) {
 }
 
 template <typename T>
-bool Tester::isSorted(List<T>* list) {
-    for (int i = 1; i < list->size(); ++i) {
-        if ((*list)[i - 1] > (*list)[i]) {
+bool Tester::isSorted(List<T> *list)
+{
+    for (int i = 1; i < list->size(); ++i)
+    {
+        if ((*list)[i - 1] > (*list)[i])
+        {
             return false;
         }
     }
@@ -93,8 +115,10 @@ bool Tester::isSorted(List<T>* list) {
 }
 
 template <typename T>
-void Tester::print(List<T>* list) {
-    for (int i = 0; i < list->size(); ++i) {
+void Tester::print(List<T> *list)
+{
+    for (int i = 0; i < list->size(); ++i)
+    {
         cout << (*list)[i] << " ";
     }
 
@@ -102,12 +126,13 @@ void Tester::print(List<T>* list) {
 }
 
 template <typename T>
-void Tester::testForward(ForwardList<T>* list) {
+void Tester::testForward(ForwardList<T> *list)
+{
     Mocker mocker;
     unsigned int size = mocker.generateRandomInt(5);
-    T* elements = mocker.generateRandomArray<T>(size);
+    T *elements = mocker.generateRandomArray<T>(size);
 
-    ForwardList<T>* list1 = new ForwardList<T>;
+    ForwardList<T> *list1 = new ForwardList<T>;
     list1->push_back(elements[0]);
     list1->push_back(elements[1]);
     list1->push_back(elements[2]);
@@ -126,12 +151,13 @@ void Tester::testForward(ForwardList<T>* list) {
 }
 
 template <typename T>
-void Tester::testLinked(LinkedList<T>* list) {
+void Tester::testLinked(LinkedList<T> *list)
+{
     Mocker mocker;
     unsigned int size = mocker.generateRandomInt(5);
-    T* elements = mocker.generateRandomArray<T>(size);
+    T *elements = mocker.generateRandomArray<T>(size);
 
-    LinkedList<T>* list1 = new LinkedList<T>;
+    LinkedList<T> *list1 = new LinkedList<T>;
     list1->push_back(elements[0]);
     list1->push_back(elements[1]);
     list1->push_back(elements[2]);
@@ -152,12 +178,13 @@ void Tester::testLinked(LinkedList<T>* list) {
 }
 
 template <typename T>
-void Tester::testCircularLinked(CircularLinkedList<T>* list) {
+void Tester::testCircularLinked(CircularLinkedList<T> *list)
+{
     Mocker mocker;
     unsigned int size = mocker.generateRandomInt(5);
-    T* elements = mocker.generateRandomArray<T>(size);
+    T *elements = mocker.generateRandomArray<T>(size);
 
-    CircularLinkedList<T>* list1 = new CircularLinkedList<T>;
+    CircularLinkedList<T> *list1 = new CircularLinkedList<T>;
     list1->push_back(elements[0]);
     list1->push_back(elements[1]);
     list1->push_back(elements[2]);

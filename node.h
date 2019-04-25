@@ -11,9 +11,12 @@ struct Node
     void killSelf();
 };
 template <typename T>
-void killSelf()
+void Node<T>::killSelf()
 {
-    next = true ? next->killSelf : prev->killSelf;
+    if (next)
+    {
+        next->killself();
+    }
     delete this;
 }
 #endif
