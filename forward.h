@@ -18,12 +18,26 @@ public:
 
     T front()
     {
-        return head->data;
+        if (head != nullptr)
+        {
+            return head->data;
+        }
+        else
+        {
+            throw out_of_range("List empty, no front exists.");
+        }
     }
 
     T back()
     {
-        return tail->data;
+        if (tail != nullptr)
+        {
+            return tail->data;
+        }
+        else
+        {
+            throw out_of_range("List empty, no tail exists.");
+        }
     }
 
     void push_front(T value)
@@ -105,24 +119,20 @@ public:
             }
 
             delete nodeToDelete;
+            countElements--;
         }
-        countElements--;
     }
 
     T operator[](int index)
     {
-        Node<T> *curr;
-        curr = head;
-        if (index > size() || index < 0)
+        if (index > this->size())
         {
-            throw out_of_range("Invalid");
+            throw out_of_range("Index out of range");
         }
-        else
+        Node<T> *curr = head;
+        for (int i = 0; i < index; i++)
         {
-            for (int i = 0; i < index; i++)
-            {
-                curr = curr->next;
-            }
+            curr = curr->next;
         }
         return curr->data;
     }
@@ -203,16 +213,8 @@ public:
 
     void merge(ForwardList<T> list)
     {
-        if (empty())
-        {
-            head = list.head;
-            tail = list.tail;
-        }
-        else if (!list.empty())
-        {
-            tail->next = list.head;
-            tail = list.tail;
-        }
+        for (int i = 0; i < list.nodes; i++)
+            push_back(list[i]);
     }
 };
 

@@ -8,6 +8,7 @@ class CircularLinkedList : public List<T>
 {
 private:
     Node<T> *start;
+    int countingElements = 0;
 
 public:
     CircularLinkedList() : List<T>() {}
@@ -55,6 +56,7 @@ public:
             temp->next = start;
             temp->prev = start;
         }
+        countingElements++;
     }
 
     void push_back(T value)
@@ -74,6 +76,7 @@ public:
             temp->next = start;
             temp->prev = start;
         }
+        countingElements++;
     }
 
     void pop_front()
@@ -96,6 +99,7 @@ public:
                 start = temp_start;
                 temp_start = nullptr;
             }
+            countingElements--;
         }
         else
         {
@@ -122,6 +126,7 @@ public:
                 delete temp_prev;
                 temp_prev = nullptr;
             }
+            countingElements--;
         }
         else
         {
@@ -131,26 +136,19 @@ public:
 
     T operator[](int index)
     {
-        if (!start)
+
+        if (index < 1)
         {
-            if (index < 1)
-            {
-                cout << start << endl;
-            }
-            else
-            {
-                Node<T> *curr;
-                curr = start;
-                for (int i = 0; i < index; ++i)
-                {
-                    curr = curr->next;
-                }
-                return curr->data;
-            }
+            return start->data;
         }
         else
         {
-            cout << "invalid";
+            Node<T> *curr = start;
+            for (int i = 0; i < index; ++i)
+            {
+                curr = curr->next;
+            }
+            return curr->data;
         }
     }
 
@@ -161,22 +159,7 @@ public:
 
     int size()
     {
-        if (start)
-        {
-            Node<T> *curr;
-            curr = start;
-            int count = 0;
-            while (curr->next != start->next)
-            {
-                curr = curr->next;
-                count++;
-            }
-            return count;
-        }
-        else
-        {
-            return 0;
-        }
+        return countingElements;
     }
 
     void clear()

@@ -12,18 +12,33 @@ private:
     Node<T> *head;
     Node<T> *tail;
     int node;
+    int countingElements = 0;
 
 public:
     LinkedList() : List<T>() {}
 
     T front()
     {
-        return head->data;
+        if (head != nullptr)
+        {
+            return head->data;
+        }
+        else
+        {
+            throw out_of_range("List empty, no front exists.");
+        }
     }
 
     T back()
     {
-        return head->prev->data;
+        if (tail != nullptr)
+        {
+            return head->prev->data;
+        }
+        else
+        {
+            throw out_of_range("List empty, no tail exists.");
+        }
     }
 
     void push_front(T value)
@@ -42,6 +57,7 @@ public:
             NewData->data = value;
             head = NewData;
         }
+        countingElements++;
     }
 
     void push_back(T value)
@@ -61,6 +77,7 @@ public:
             tail->next = NewData;
             tail = NewData;
         }
+        countingElements++;
     }
 
     void pop_front()
@@ -79,6 +96,7 @@ public:
                 head = nullptr;
                 head = temp;
             }
+            countingElements--;
         }
         else
         {
@@ -107,6 +125,7 @@ public:
                 tail = temp;
                 tail->next = nullptr;
             }
+            countingElements--;
         }
         else
         {
@@ -126,7 +145,7 @@ public:
             }
             temp->next = temp;
         }
-        cout << temp << endl;
+        return temp->data;
     }
 
     bool empty()
@@ -136,17 +155,7 @@ public:
 
     int size()
     {
-        Node<T> *temp;
-        int count;
-        if (empty())
-        {
-            int count = 0;
-            while (temp->next != nullptr)
-            {
-                count++;
-            }
-        }
-        return count;
+        return countingElements;
     }
 
     void clear()
