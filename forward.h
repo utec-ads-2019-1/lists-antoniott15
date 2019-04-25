@@ -3,25 +3,44 @@
 
 #include "list.h"
 #include "iterators/forward_iterator.h"
-
+#include <iostream>
 template <typename T>
 class ForwardList : public List<T>
 {
 private:
     Node<T> *head;
     Node<T> *tail;
+<<<<<<< HEAD
+=======
+    int node;
+    int countElements = 0;
+>>>>>>> develop
 
 public:
     ForwardList() : List<T>() {}
 
     T front()
     {
-        return head->data;
+        if (head != nullptr)
+        {
+            return head->data;
+        }
+        else
+        {
+            throw out_of_range("List empty, no front exists.");
+        }
     }
 
     T back()
     {
-        return tail->data;
+        if (tail != nullptr)
+        {
+            return tail->data;
+        }
+        else
+        {
+            throw out_of_range("List empty, no tail exists.");
+        }
     }
 
     void push_front(T value)
@@ -40,6 +59,7 @@ public:
             NewData->next = head;
             head = NewData;
         }
+        countElements++;
     }
 
     void push_back(T value)
@@ -59,6 +79,11 @@ public:
         }
         else
             tail->prev = NewData;
+<<<<<<< HEAD
+=======
+
+        countElements++;
+>>>>>>> develop
     }
 
     void pop_front()
@@ -68,6 +93,16 @@ public:
         {
             delete head;
             head = nullptr;
+<<<<<<< HEAD
+        }
+        else
+        {
+            Node<T> *temp = head->next;
+            delete head;
+            head = nullptr;
+            head = temp;
+=======
+>>>>>>> develop
         }
         else
         {
@@ -76,13 +111,18 @@ public:
             head = nullptr;
             head = temp;
         }
+        countElements--;
     }
 
     void pop_back()
     {
         if (empty())
         {
+<<<<<<< HEAD
             cout << "empty list" << endl;
+=======
+            throw out_of_range("Invalid");
+>>>>>>> develop
         }
         else
         {
@@ -99,31 +139,41 @@ public:
             }
 
             delete nodeToDelete;
+<<<<<<< HEAD
+=======
+            countElements--;
+>>>>>>> develop
         }
     }
 
     T operator[](int index)
     {
+<<<<<<< HEAD
         Node<T> *temp;
         temp = head;
         for (int i = 0; i <= index; i++)
+=======
+        if (index > this->size())
+>>>>>>> develop
         {
-            if (temp->next == nullptr)
-            {
-                throw;
-            }
-            temp->next = temp;
+            throw out_of_range("Index out of range");
         }
-        cout << temp << "\n";
+        Node<T> *curr = head;
+        for (int i = 0; i < index; i++)
+        {
+            curr = curr->next;
+        }
+        return curr->data;
     }
 
     bool empty()
     {
-        return head == NULL ? true : false;
+        return (size() == 0 ? true : false);
     }
 
     int size()
     {
+<<<<<<< HEAD
         Node<T> *temp;
         temp = head;
         int count;
@@ -136,6 +186,9 @@ public:
             }
         }
         return count;
+=======
+        return countElements;
+>>>>>>> develop
     }
 
     void clear()
@@ -149,11 +202,19 @@ public:
     void sort()
     {
         if (empty())
+<<<<<<< HEAD
         {
             cout << "list empty";
         }
         else
         {
+=======
+        {
+            cout << "list empty";
+        }
+        else
+        {
+>>>>>>> develop
             Node<T> *i, *j;
             int temp;
             for (i = head; i->next != nullptr; i = i->next)
@@ -185,6 +246,7 @@ public:
     }
 
     ForwardIterator<T> begin()
+<<<<<<< HEAD
     {
         if (empty())
         {
@@ -208,12 +270,34 @@ public:
         {
             head = list.head;
             tail = list.tail;
-        }
-        else if (!list.empty())
+=======
+    {
+        if (empty())
         {
+            throw out_of_range("Invalid");
+>>>>>>> develop
+        }
+        return head;
+    };
+
+    ForwardIterator<T> end()
+    {
+        if (empty())
+        {
+<<<<<<< HEAD
             tail->next = list.head;
             tail = list.tail;
+=======
+            throw out_of_range("Invalid");
+>>>>>>> develop
         }
+        return tail;
+    };
+
+    void merge(ForwardList<T> list)
+    {
+        for (int i = 0; i < list.nodes; i++)
+            push_back(list[i]);
     }
 };
 

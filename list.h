@@ -28,7 +28,11 @@ public:
     virtual void reverse() = 0;
     virtual string name() = 0;
 
+<<<<<<< HEAD
     ~List();
+=======
+    //~List();
+>>>>>>> develop
 };
 
 #endif

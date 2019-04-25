@@ -3,149 +3,156 @@
 
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
+#include <iostream>
+#include <stdexcept>
 
+using namespace std;
 template <typename T>
 class LinkedList : public List<T>
 {
 private:
     Node<T> *head;
     Node<T> *tail;
-    int node;
+    int countingElements = 0;
 
 public:
     LinkedList() : List<T>() {}
 
     T front()
     {
-        return head->data;
+        if (head != nullptr)
+        {
+            return head->data;
+        }
+        else
+        {
+            throw out_of_range("Invalid in T front");
+        }
     }
 
     T back()
     {
-        return head->prev->data;
+        if (tail != nullptr)
+        {
+            return tail->prev->data;
+        }
+        elsegit
+        {
+            throw out_of_range("Invalid in T back");
+        }
     }
 
     void push_front(T value)
     {
-        Node<T> *NewData = new Node<T>;
-        NewData->data = value;
-        if (empty())
+        Node<T> *temp = new Node<T>;
+        temp->data = value;
+        if (head)
         {
-            NewData->next = nullptr;
-            NewData->prev = nullptr;
-            head = NewData;
-            tail = NewData;
+            temp->next = head;
+            temp->prev = head->prev;
+            temp->prev->next = temp;
+            temp->next->prev = temp;
+            head = temp;
         }
         else
         {
-            head->prev = NewData;
-            NewData->next = head;
-            head = NewData;
+            head = temp;
+            temp->next = head;
+            temp->prev = head;
         }
+        countingElements++;
     }
 
     void push_back(T value)
     {
-        Node<T> *NewData = new Node<T>;
-        NewData->data = value;
-
-        if (empty())
+        Node<T> *temp = new Node<T>;
+        temp->data = value;
+        if (head)
         {
-            NewData->next = nullptr;
-            NewData->prev = nullptr;
-            head = NewData;
-            tail = NewData;
+            temp->next = head;
+            temp->prev = head->prev;
+            temp->prev->next = temp;
+            temp->next->prev = temp;
         }
         else
         {
-            if (tail != nullptr)
-                tail->next = NewData;
-            NewData->next = nullptr;
-            NewData->prev = tail;
-            tail = NewData;
+            head = temp;
+            temp->next = head;
+            temp->prev = head;
         }
+        countingElements++;
     }
 
     void pop_front()
     {
-        if (!empty())
+        if (head)
         {
-            Node<T> *nodeToDelete = head;
-            head = head->next;
+            Node<T> *temp_head;
+            head->next->prev = head->prev;
+            head->prev->next = head->next;
+            temp_head = head->next;
+            delete head;
 
-            if (head)
+            if (head == temp_head)
             {
-                head->next = nullptr;
+                head = nullptr;
+                temp_head = nullptr;
             }
             else
             {
-                head = nullptr;
+                head = temp_head;
+                temp_head = nullptr;
             }
-
-            delete nodeToDelete;
-        }
-        else
-        {
-            cout << "empty list" << endl;
+            countingElements--;
         }
     }
 
     void pop_back()
     {
-        if (empty())
+        if (head)
         {
-            if (head->next == nullptr)
+            if (head == head->prev)
             {
                 delete head;
                 head = nullptr;
             }
             else
             {
-                Node<T> *temp = head;
-                while (temp->next != tail)
-                {
-                    temp = temp->next;
-                }
+                Node<T> *temp_prev;
+                temp_prev = head->prev;
 
-                delete tail;
-                tail = temp;
-                tail->next = nullptr;
+                head->prev->prev->next = head;
+                head->prev = head->prev->prev;
+                delete temp_prev;
+                temp_prev = nullptr;
             }
+            countingElements--;
         }
     }
 
     T operator[](int index)
     {
-        Node<T> *temp = head;
-        for (int i = 0; i <= index; i++)
+        Node<T> *temp;
+        temp = head;
+        for (int i = 0; i < index; ++i)
         {
             if (temp->next == nullptr)
             {
-                cout << "not more values";
+                throw out_of_range("Invalid in T index");
             }
             temp->next = temp;
         }
-        cout << temp << "\n";
+        return temp->data;
     }
 
     bool empty()
     {
-        return head == NULL ? true : false;
+        return countingElements == 0 ? true : false;
     }
 
     int size()
     {
-        Node<T> *temp;
-        int count;
-        if (empty())
-        {
-            int count = 0;
-            while (temp->next != nullptr)
-            {
-                count++;
-            }
-        }
-        return count;
+        return countingElements;
     }
 
     void clear()
@@ -160,7 +167,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empty";
+            throw out_of_range("Invalid empty in sort");
         }
         else
         {
@@ -198,7 +205,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empyty";
+            throw out_of_range("Invalid in BidirectionalIterator begin");
         }
         return head;
     };
@@ -206,7 +213,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empyty";
+            throw out_of_range("Invalid int BidirectionalIterator end");
         }
         return tail;
     };

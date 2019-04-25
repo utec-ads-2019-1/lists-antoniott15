@@ -1,6 +1,6 @@
 #ifndef CIRCULAR_H
 #define CIRCULAR_H
-
+#include <iostream>
 #include "list.h"
 
 template <typename T>
@@ -8,6 +8,7 @@ class CircularLinkedList : public List<T>
 {
 private:
     Node<T> *start;
+    int countingElements = 0;
 
 public:
     CircularLinkedList() : List<T>() {}
@@ -16,7 +17,7 @@ public:
     {
         if (!start)
         {
-            cout << "lista vacia" << endl;
+            throw out_of_range("Invalid");
         }
         else
         {
@@ -28,7 +29,7 @@ public:
     {
         if (!start)
         {
-            cout << "lista vacia" << endl;
+            throw out_of_range("Invalid");
         }
         else
         {
@@ -55,6 +56,7 @@ public:
             temp->next = start;
             temp->prev = start;
         }
+        countingElements++;
     }
 
     void push_back(T value)
@@ -74,6 +76,7 @@ public:
             temp->next = start;
             temp->prev = start;
         }
+        countingElements++;
     }
 
     void pop_front()
@@ -96,10 +99,11 @@ public:
                 start = temp_start;
                 temp_start = nullptr;
             }
+            countingElements--;
         }
         else
         {
-            cout << "lista vacia" << endl;
+            throw out_of_range("Invalid");
         }
     }
 
@@ -122,6 +126,7 @@ public:
                 delete temp_prev;
                 temp_prev = nullptr;
             }
+            countingElements--;
         }
         else
         {
@@ -132,27 +137,18 @@ public:
     T operator[](int index)
     {
 
-        if (!start)
+        if (index < 1)
         {
-            cout << "empty list" << endl;
+            return start->data;
         }
         else
         {
-            if (index < 1)
+            Node<T> *curr = start;
+            for (int i = 0; i < index; ++i)
             {
-                cout << start << endl;
+                curr = curr->next;
             }
-            else
-            {
-                Node<T> *curr;
-                curr = start;
-                for (int i = 0; i < index; ++i)
-                {
-                    curr = curr->next;
-                }
-
-                return curr->data;
-            }
+            return curr->data;
         }
     }
 
@@ -163,22 +159,7 @@ public:
 
     int size()
     {
-        if (start)
-        {
-            Node<T> *curr;
-            curr = start;
-            int i = 0;
-            do
-            {
-                curr = curr->next;
-                i++;
-            } while (curr->next != start->next);
-            return i;
-        }
-        else
-        {
-            return 0;
-        }
+        return countingElements;
     }
 
     void clear()
@@ -210,7 +191,7 @@ public:
             }
         }
         else
-            cout << "list empty";
+            throw out_of_range("Invalid");
     }
 
     void reverse()
