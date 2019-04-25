@@ -1,6 +1,6 @@
 #ifndef CIRCULAR_H
 #define CIRCULAR_H
-
+#include <iostream>
 #include "list.h"
 
 template <typename T>
@@ -16,7 +16,7 @@ public:
     {
         if (!start)
         {
-            cout << "lista vacia" << endl;
+            throw out_of_range("Invalid");
         }
         else
         {
@@ -28,7 +28,7 @@ public:
     {
         if (!start)
         {
-            cout << "lista vacia" << endl;
+            throw out_of_range("Invalid");
         }
         else
         {
@@ -99,7 +99,7 @@ public:
         }
         else
         {
-            cout << "lista vacia" << endl;
+            throw out_of_range("Invalid");
         }
     }
 
@@ -131,12 +131,7 @@ public:
 
     T operator[](int index)
     {
-
         if (!start)
-        {
-            cout << "empty list" << endl;
-        }
-        else
         {
             if (index < 1)
             {
@@ -150,9 +145,12 @@ public:
                 {
                     curr = curr->next;
                 }
-
                 return curr->data;
             }
+        }
+        else
+        {
+            cout << "invalid";
         }
     }
 
@@ -167,13 +165,13 @@ public:
         {
             Node<T> *curr;
             curr = start;
-            int i = 0;
-            do
+            int count = 0;
+            while (curr->next != start->next)
             {
                 curr = curr->next;
-                i++;
-            } while (curr->next != start->next);
-            return i;
+                count++;
+            }
+            return count;
         }
         else
         {
@@ -210,7 +208,7 @@ public:
             }
         }
         else
-            cout << "list empty";
+            throw out_of_range("Invalid");
     }
 
     void reverse()

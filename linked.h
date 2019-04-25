@@ -3,7 +3,8 @@
 
 #include "list.h"
 #include "iterators/bidirectional_iterator.h"
-
+#include <iostream>
+using namespace std;
 template <typename T>
 class LinkedList : public List<T>
 {
@@ -28,18 +29,17 @@ public:
     void push_front(T value)
     {
         Node<T> *NewData = new Node<T>;
-        NewData->data = value;
         if (empty())
         {
+            NewData->data = value;
             NewData->next = nullptr;
-            NewData->prev = nullptr;
             head = NewData;
             tail = NewData;
         }
         else
         {
-            head->prev = NewData;
             NewData->next = head;
+            NewData->data = value;
             head = NewData;
         }
     }
@@ -47,46 +47,42 @@ public:
     void push_back(T value)
     {
         Node<T> *NewData = new Node<T>;
-        NewData->data = value;
-
         if (empty())
         {
+            NewData->data = value;
             NewData->next = nullptr;
-            NewData->prev = nullptr;
             head = NewData;
             tail = NewData;
         }
         else
         {
-            if (tail != nullptr)
-                tail->next = NewData;
-            NewData->next = nullptr;
-            NewData->prev = tail;
+            NewData->next = NULL;
+            NewData->data = value;
+            tail->next = NewData;
             tail = NewData;
         }
     }
 
     void pop_front()
     {
-        if (!empty())
+        if (empty())
         {
-            Node<T> *nodeToDelete = head;
-            head = head->next;
-
-            if (head)
+            if (head->next == nullptr)
             {
-                head->next = nullptr;
+                delete head;
+                head = nullptr;
             }
             else
             {
+                Node<T> *temp = head->next;
+                delete head;
                 head = nullptr;
+                head = temp;
             }
-
-            delete nodeToDelete;
         }
         else
         {
-            cout << "empty list" << endl;
+            cout << "invalid";
         }
     }
 
@@ -112,20 +108,25 @@ public:
                 tail->next = nullptr;
             }
         }
+        else
+        {
+            cout << "invalid";
+        }
     }
 
     T operator[](int index)
     {
         Node<T> *temp = head;
-        for (int i = 0; i <= index; i++)
+
+        for (int i = 0; i < index; ++i)
         {
             if (temp->next == nullptr)
             {
-                cout << "not more values";
+                cout << "invalid";
             }
             temp->next = temp;
         }
-        cout << temp << "\n";
+        cout << temp << endl;
     }
 
     bool empty()

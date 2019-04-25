@@ -3,7 +3,7 @@
 
 #include "list.h"
 #include "iterators/forward_iterator.h"
-
+#include <iostream>
 template <typename T>
 class ForwardList : public List<T>
 {
@@ -11,6 +11,7 @@ private:
     Node<T> *head;
     Node<T> *tail;
     int node;
+    int countElements = 0;
 
 public:
     ForwardList() : List<T>() {}
@@ -41,6 +42,7 @@ public:
             NewData->next = head;
             head = NewData;
         }
+        countElements++;
     }
 
     void push_back(T value)
@@ -60,6 +62,8 @@ public:
         }
         else
             tail->prev = NewData;
+
+        countElements++;
     }
 
     void pop_front()
@@ -77,13 +81,14 @@ public:
             head = nullptr;
             head = temp;
         }
+        countElements--;
     }
 
     void pop_back()
     {
         if (empty())
         {
-            cout << "empty list" << endl;
+            throw out_of_range("Invalid");
         }
         else
         {
@@ -101,42 +106,35 @@ public:
 
             delete nodeToDelete;
         }
+        countElements--;
     }
 
     T operator[](int index)
     {
-        Node<T> *temp;
-        temp = head;
-        for (int i = 0; i <= index; i++)
+        Node<T> *curr;
+        curr = head;
+        if (index > size() || index < 0)
         {
-            if (temp->next == nullptr)
-            {
-                throw;
-            }
-            temp->next = temp;
+            throw out_of_range("Invalid");
         }
-        cout << temp << "\n";
+        else
+        {
+            for (int i = 0; i < index; i++)
+            {
+                curr = curr->next;
+            }
+        }
+        return curr->data;
     }
 
     bool empty()
     {
-        return head == NULL ? true : false;
+        return (size() == 0 ? true : false);
     }
 
     int size()
     {
-        Node<T> *temp;
-        temp = head;
-        int count;
-        if (empty())
-        {
-            count = 0;
-            while (temp->next != nullptr)
-            {
-                count++;
-            }
-        }
-        return count;
+        return countElements;
     }
 
     void clear()
@@ -189,7 +187,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empyty";
+            throw out_of_range("Invalid");
         }
         return head;
     };
@@ -198,7 +196,7 @@ public:
     {
         if (empty())
         {
-            cout << "list empyty";
+            throw out_of_range("Invalid");
         }
         return tail;
     };

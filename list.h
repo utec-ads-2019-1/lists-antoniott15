@@ -28,7 +28,7 @@ public:
     virtual void reverse() = 0;
     virtual string name() = 0;
 
-    ~List();
+    //  ~List();
 };
 
 #endif
