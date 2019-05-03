@@ -36,7 +36,7 @@ public:
         {
             return tail->prev->data;
         }
-        elsegit
+        else
         {
             throw out_of_range("Invalid in T back");
         }

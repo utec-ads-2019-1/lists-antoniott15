@@ -27,7 +27,7 @@ public:
     virtual void sort() = 0;
     virtual void reverse() = 0;
     virtual string name() = 0;
-
+// Mezclaste mal
 <<<<<<< HEAD
     ~List();
 =======
