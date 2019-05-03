@@ -14,7 +14,7 @@ public:
     BidirectionalIterator(Node<T> *node) : Iterator<T>(node){};
 
     BidirectionalIterator<T> operator=(BidirectionalIterator<T> other)
-    {
+    {   // Este return está mal
         return curr = other.curr;
     }
 
@@ -36,7 +36,7 @@ public:
     }
 
     T operator*()
-    {
+    {   // Falta controlar caso vacío
         return curr->data;
     }
 };

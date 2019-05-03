@@ -139,6 +139,7 @@ public:
 
     bool empty()
     {
+        // Podría ser size() == 0;
         return (size() == 0 ? true : false);
     }
 
@@ -194,7 +195,7 @@ public:
     }
 
     ForwardIterator<T> begin()
-    {
+    {   // Retorna iteradores, no nodos
         if (empty())
         {
             throw out_of_range("Invalid");
@@ -204,6 +205,7 @@ public:
 
     ForwardIterator<T> end()
     {
+        // Retorna iteradores, no nodos
         if (empty())
         {
             throw out_of_range("Invalid");
